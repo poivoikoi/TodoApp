@@ -1,0 +1,56 @@
+﻿@model IEnumerable<TodoApp.Models.Task>
+
+<form asp-controller="Tasks" asp-action="Index" method="get">
+    <p>
+        <input type="text" name="searchString" placeholder="Search by name" />
+        <input type="submit" value="Search" />
+    </p>
+</form>
+
+<div class="mb-3">
+    <a class="btn btn-primary" asp-action="Create">Create New</a>
+</div>
+
+<form asp-controller="Tasks" asp-action="Index" method="get">
+    <div class="mb-3">
+        <label for="startDate">Start Date:</label>
+        <input type="date" id="startDate" name="startDate" />
+
+        <label for="endDate">End Date:</label>
+        <input type="date" id="endDate" name="endDate" />
+
+        <input type="submit" value="Filter by Date Range" class="btn btn-secondary" />
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParam"]">Name</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["IsCompletedSortParam"]">Is Completed</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParam"]">Date</a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var task in Model)
+        {
+            <tr>
+                <td>@task.Name</td>
+                <td>@(task.IsCompleted ? "Yes" : "No")</td>
+                <td>@task.CreatedDate.ToShortDateString()</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@task.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@task.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@task.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
